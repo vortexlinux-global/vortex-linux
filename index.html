@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vortex Linux | Next-Gen OS Ecosystem</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        vortex: {
+                            purple: '#a855f7',
+                            violet: '#7c3aed',
+                            blue: '#2563eb',
+                            cyan: '#06b6d4',
+                            dark: '#05070f',
+                            card: '#0d1127',
+                            border: 'rgba(124, 58, 237, 0.25)'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        mono: ['Fira Code', 'monospace']
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800;900&family=Fira+Code:wght@400;600&display=swap">
+    <style>
+        body {
+            background-color: #05070f;
+            color: #e2e8f0;
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #070913;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #2563eb;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #a855f7;
+        }
+
+        /* Glassmorphism Effect */
+        .glass-card {
+            background: rgba(13, 17, 39, 0.65);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(168, 85, 247, 0.18);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.5);
+        }
+
+        .glass-card:hover {
+            border-color: rgba(6, 182, 212, 0.4);
+            box-shadow: 0 8px 32px 0 rgba(124, 58, 237, 0.25);
+        }
+
+        .text-gradient {
+            background: linear-gradient(135deg, #a855f7 0%, #3b82f6 50%, #06b6d4 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* Canvas Particle Background */
+        #bg-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        /* Grid Pattern */
+        .bg-grid-pattern {
+            background-size: 40px 40px;
+            background-image: 
+                linear-gradient(to right, rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+        }
+    </style>
+</head>
+<body class="bg-grid-pattern min-h-screen flex flex-col justify-between selection:bg-purple-500 selection:text-white">
+
+    <!-- Background Animation Canvas -->
+    <canvas id="bg-canvas"></canvas>
+
+    <!-- Header Navigation -->
+    <header class="sticky top-0 z-50 glass-card border-b border-purple-900/30 px-6 py-4 transition-all duration-300">
+        <div class="max-w-7xl mx-auto flex items-center justify-between">
+            <!-- Clean Typography Title (No Graphic Logo) -->
+            <div class="cursor-pointer" onclick="scrollToTop()">
+                <span class="text-2xl font-black tracking-wider text-white">VORTEX <span class="text-gradient">LINUX</span></span>
+            </div>
+
+            <!-- Header Action Links -->
+            <nav class="hidden md:flex items-center space-x-8 text-sm font-semibold">
+                <a href="#overview" class="hover:text-purple-400 transition-colors">Overview</a>
+                <a href="#modules" class="hover:text-purple-400 transition-colors">Architecture</a>
+                <a href="#roadmap" class="hover:text-purple-400 transition-colors">Roadmap</a>
+                <a href="#terminal" class="hover:text-purple-400 transition-colors">Terminal Sandbox</a>
+            </nav>
+
+            <div class="flex items-center space-x-4">
+                <a href="#terminal" onclick="launchSandbox()" class="px-5 py-2.5 rounded-xl bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-500 hover:to-blue-500 text-white font-bold text-sm shadow-lg shadow-purple-900/40 transition-all duration-300 hover:scale-105 flex items-center gap-2">
+                    <i class="fa-solid fa-terminal"></i>
+                    <span>Live Console</span>
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-7xl mx-auto px-6 py-12 space-y-20 flex-grow">
+
+        <!-- HERO SECTION -->
+        <section id="overview" class="text-center relative py-12">
+            <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-purple-600/20 rounded-full blur-3xl -z-10"></div>
+            <div class="absolute top-1/2 left-1/3 -translate-x-1/2 -translate-y-1/2 w-80 h-80 bg-blue-600/20 rounded-full blur-3xl -z-10"></div>
+
+            <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-card border border-purple-500/30 text-xs font-semibold text-purple-300 mb-8 animate-pulse">
+                <span class="w-2 h-2 rounded-full bg-cyan-400"></span>
+                Official Distribution Showcase • Build v1.0 'Aether'
+            </div>
+
+            <!-- Text Typography Branding Title (No Graphic Logo) -->
+            <div class="mb-6">
+                <h1 class="text-5xl sm:text-7xl font-black tracking-tight text-white mb-2">
+                    VORTEX <span class="text-gradient">LINUX</span>
+                </h1>
+                <p class="text-xs uppercase tracking-[0.3em] text-cyan-400 font-bold">Next-Generation Cybernetic OS Architecture</p>
+            </div>
+
+            <p class="text-slate-400 text-lg sm:text-xl max-w-3xl mx-auto leading-relaxed mb-10">
+                Engineered for extreme performance, immutable system reliability, and an uncompromising modern aesthetic with native hardware acceleration and custom kernel optimizations.
+            </p>
+
+            <div class="flex flex-wrap justify-center gap-4">
+                <button onclick="launchSandbox()" class="px-8 py-4 rounded-xl bg-purple-600 hover:bg-purple-500 text-white font-bold text-base shadow-xl shadow-purple-900/50 transition-all duration-300 hover:scale-105 flex items-center gap-3">
+                    <i class="fa-solid fa-terminal"></i>
+                    <span>Launch Terminal Sandbox</span>
+                </button>
+                <a href="#modules" class="px-8 py-4 rounded-xl glass-card border border-purple-500/30 hover:border-purple-400 text-purple-200 font-bold text-base transition-all duration-300 hover:scale-105 flex items-center gap-3">
+                    <i class="fa-solid fa-microchip"></i>
+                    <span>Explore System Core</span>
+                </a>
+            </div>
+        </section>
+
+        <!-- SYSTEM MODULE STATUS CARDS -->
+        <section id="modules" class="space-y-8">
+            <div class="flex items-center justify-between border-b border-purple-900/40 pb-4">
+                <div>
+                    <h2 class="text-2xl font-bold text-white flex items-center gap-3">
+                        <i class="fa-solid fa-cubes text-purple-400"></i>
+                        Core System Modules
+                    </h2>
+                    <p class="text-sm text-slate-400 mt-1">Real-time compilation and verification status of Vortex Linux components</p>
+                </div>
+                <span class="px-3 py-1 rounded-full text-xs font-mono bg-emerald-500/10 text-emerald-400 border border-emerald-500/30">
+                    <i class="fa-solid fa-check-circle mr-1"></i> All Systems Nominal
+                </span>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <!-- Card 1 -->
+                <div class="glass-card rounded-2xl p-6 relative overflow-hidden group hover:-translate-y-1 transition-all duration-300">
+                    <div class="w-12 h-12 rounded-xl bg-purple-500/20 flex items-center justify-center text-purple-400 mb-4 border border-purple-500/30">
+                        <i class="fa-solid fa-desktop text-xl"></i>
+                    </div>
+                    <h3 class="font-bold text-lg text-white mb-1">Aesthetic Shell</h3>
+                    <p class="text-xs text-slate-400 mb-4">Wayland Compositor with dynamic glassmorphism and blur shaders.</p>
+                    <div class="space-y-2">
+                        <div class="flex justify-between text-xs font-mono">
+                            <span class="text-slate-400">Integrity</span>
+                            <span class="text-purple-400 font-bold">100% Verified</span>
+                        </div>
+                        <div class="w-full bg-slate-800 rounded-full h-2 overflow-hidden">
+                            <div class="bg-gradient-to-r from-purple-500 to-cyan-400 h-full w-full"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 2 -->
+                <div class="glass-card rounded-2xl p-6 relative overflow-hidden group hover:-translate-y-1 transition-all duration-300">
+                    <div class="w-12 h-12 rounded-xl bg-cyan-500/20 flex items-center justify-center text-cyan-400 mb-4 border border-cyan-500/30">
+                        <i class="fa-solid fa-power-off text-xl"></i>
+                    </div>
+                    <h3 class="font-bold text-lg text-white mb-1">Plymouth Engine</h3>
+                    <p class="text-xs text-slate-400 mb-4">Ultra-fast bootloader splash engine with instant graphical init.</p>
+                    <div class="space-y-2">
+                        <div class="flex justify-between text-xs font-mono">
+                            <span class="text-slate-400">Boot Time</span>
+                            <span class="text-cyan-400 font-bold">1.2s Optimized</span>
+                        </div>
+                        <div class="w-full bg-slate-800 rounded-full h-2 overflow-hidden">
+                            <div class="bg-gradient-to-r from-cyan-500 to-blue-500 h-full w-full"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 3 -->
+                <div class="glass-card rounded-2xl p-6 relative overflow-hidden group hover:-translate-y-1 transition-all duration-300">
+                    <div class="w-12 h-12 rounded-xl bg-blue-500/20 flex items-center justify-center text-blue-400 mb-4 border border-blue-500/30">
+                        <i class="fa-solid fa-compact-disc text-xl"></i>
+                    </div>
+                    <h3 class="font-bold text-lg text-white mb-1">Installer Suite</h3>
+                    <p class="text-xs text-slate-400 mb-4">Native graphical deployment installer with custom partitioning.</p>
+                    <div class="space-y-2">
+                        <div class="flex justify-between text-xs font-mono">
+                            <span class="text-slate-400">Deployment</span>
+                            <span class="text-blue-400 font-bold">Ready</span>
+                        </div>
+                        <div class="w-full bg-slate-800 rounded-full h-2 overflow-hidden">
+                            <div class="bg-gradient-to-r from-blue-600 to-purple-600 h-full w-full"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 4 -->
+                <div class="glass-card rounded-2xl p-6 relative overflow-hidden group hover:-translate-y-1 transition-all duration-300">
+                    <div class="w-12 h-12 rounded-xl bg-pink-500/20 flex items-center justify-center text-pink-400 mb-4 border border-pink-500/30">
+                        <i class="fa-solid fa-icons text-xl"></i>
+                    </div>
+                    <h3 class="font-bold text-lg text-white mb-1">Vortex Icon Suite</h3>
+                    <p class="text-xs text-slate-400 mb-4">Vector-based dark icon theme engineered for high DPI displays.</p>
+                    <div class="space-y-2">
+                        <div class="flex justify-between text-xs font-mono">
+                            <span class="text-slate-400">Coverage</span>
+                            <span class="text-pink-400 font-bold">3,400+ Icons</span>
+                        </div>
+                        <div class="w-full bg-slate-800 rounded-full h-2 overflow-hidden">
+                            <div class="bg-gradient-to-r from-pink-500 to-purple-500 h-full w-full"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- BUILD METRICS & ROADMAP SECTION -->
+        <section id="roadmap" class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <div class="lg:col-span-2 glass-card rounded-3xl p-8 space-y-6">
+                <div class="flex items-center gap-3 border-b border-slate-800 pb-4">
+                    <i class="fa-solid fa-list-check text-2xl text-purple-400"></i>
+                    <div>
+                        <h3 class="text-2xl font-bold text-white">Development Roadmap</h3>
+                        <p class="text-xs text-slate-400">Milestones towards stable production release</p>
+                    </div>
+                </div>
+
+                <div class="space-y-4">
+                    <!-- Milestone 1 -->
+                    <div class="flex items-start gap-4 p-4 rounded-xl bg-slate-900/50 border border-slate-800">
+                        <div class="p-2.5 rounded-lg bg-emerald-500/20 text-emerald-400 mt-0.5">
+                            <i class="fa-solid fa-check text-sm"></i>
+                        </div>
+                        <div class="flex-grow">
+                            <div class="flex items-center justify-between mb-1">
+                                <h4 class="font-bold text-white text-sm">Phase 1: Shell & Branding Persistence</h4>
+                                <span class="text-xs font-mono text-emerald-400">Completed</span>
+                            </div>
+                            <p class="text-xs text-slate-400">Locked GSettings dconf schemas, wallpaper bindings, and Papirus icon defaults.</p>
+                        </div>
+                    </div>
+
+                    <!-- Milestone 2 -->
+                    <div class="flex items-start gap-4 p-4 rounded-xl bg-slate-900/50 border border-slate-800">
+                        <div class="p-2.5 rounded-lg bg-cyan-500/20 text-cyan-400 mt-0.5">
+                            <i class="fa-solid fa-spinner animate-spin text-sm"></i>
+                        </div>
+                        <div class="flex-grow">
+                            <div class="flex items-center justify-between mb-1">
+                                <h4 class="font-bold text-white text-sm">Phase 2: Boot Engine & Installer Integration</h4>
+                                <span class="text-xs font-mono text-cyan-400">In Progress</span>
+                            </div>
+                            <p class="text-xs text-slate-400">Finalizing Plymouth boot splash hooks and Ubiquity installer desktop integration.</p>
+                        </div>
+                    </div>
+
+                    <!-- Milestone 3 -->
+                    <div class="flex items-start gap-4 p-4 rounded-xl bg-slate-900/50 border border-slate-800">
+                        <div class="p-2.5 rounded-lg bg-purple-500/20 text-purple-400 mt-0.5">
+                            <i class="fa-solid fa-clock text-sm"></i>
+                        </div>
+                        <div class="flex-grow">
+                            <div class="flex items-center justify-between mb-1">
+                                <h4 class="font-bold text-white text-sm">Phase 3: Final ISO Compression & Release</h4>
+                                <span class="text-xs font-mono text-purple-400">Upcoming</span>
+                            </div>
+                            <p class="text-xs text-slate-400">ZSTD high-efficiency filesystem compression and bootable media verification.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quick Specs Sidebar -->
+            <div class="glass-card rounded-3xl p-8 flex flex-col justify-between">
+                <div>
+                    <h3 class="text-xl font-bold text-white mb-6 flex items-center gap-2">
+                        <i class="fa-solid fa-sliders text-cyan-400"></i>
+                        Build Specifications
+                    </h3>
+                    <div class="space-y-4 font-mono text-sm">
+                        <div class="flex justify-between border-b border-slate-800 pb-2">
+                            <span class="text-slate-400">OS Architecture</span>
+                            <span class="text-purple-300 font-semibold">x86_64</span>
+                        </div>
+                        <div class="flex justify-between border-b border-slate-800 pb-2">
+                            <span class="text-slate-400">Base System</span>
+                            <span class="text-cyan-300 font-semibold">Vortex Core</span>
+                        </div>
+                        <div class="flex justify-between border-b border-slate-800 pb-2">
+                            <span class="text-slate-400">Desktop Shell</span>
+                            <span class="text-blue-300 font-semibold">Cinnamon / Wayland</span>
+                        </div>
+                        <div class="flex justify-between border-b border-slate-800 pb-2">
+                            <span class="text-slate-400">Compression</span>
+                            <span class="text-pink-300 font-semibold">ZSTD</span>
+                        </div>
+                        <div class="flex justify-between border-b border-slate-800 pb-2">
+                            <span class="text-slate-400">RAM Usage Idle</span>
+                            <span class="text-emerald-300 font-semibold">~420 MB</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-8 pt-6 border-t border-slate-800 text-center">
+                    <p class="text-xs text-slate-400 font-mono">Kernel 6.17.0-20-generic</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- TERMINAL SANDBOX -->
+        <section id="terminal" class="glass-card rounded-3xl p-6 sm:p-8 space-y-4 border border-purple-500/30">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-2">
+                    <div class="w-3 h-3 rounded-full bg-red-500"></div>
+                    <div class="w-3 h-3 rounded-full bg-yellow-500"></div>
+                    <div class="w-3 h-3 rounded-full bg-green-500"></div>
+                    <span class="ml-4 font-mono text-xs text-slate-400">vortex-user@vortex-aether:~</span>
+                </div>
+                <span class="text-xs font-mono text-purple-400">Interactive Sandbox v1.0</span>
+            </div>
+
+            <!-- Terminal Output Area -->
+            <div id="terminal-screen" class="bg-slate-950/90 rounded-xl p-4 font-mono text-xs sm:text-sm h-64 overflow-y-auto space-y-2 border border-slate-800 text-slate-200">
+                <p class="text-purple-400">Welcome to Vortex Linux OS Terminal Sandbox [Release v1.0 'Aether']</p>
+                <p class="text-slate-400">Type <span class="text-cyan-400 font-bold">'help'</span> or <span class="text-cyan-400 font-bold">'neofetch'</span> to view system information.</p>
+            </div>
+
+            <!-- Terminal Input -->
+            <form id="terminal-form" onsubmit="handleTerminalCommand(event)" class="flex gap-2">
+                <span class="font-mono text-cyan-400 flex items-center">$</span>
+                <input type="text" id="terminal-input" placeholder="Enter command (e.g., neofetch, status, uname -a, clear)..." class="flex-grow bg-slate-950 border border-slate-800 rounded-lg px-4 py-2 font-mono text-sm text-purple-300 focus:outline-none focus:border-purple-500 transition-colors" autocomplete="off">
+                <button type="submit" class="px-4 py-2 bg-purple-600 hover:bg-purple-500 rounded-lg font-bold text-xs text-white transition-colors">Exec</button>
+            </form>
+        </section>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer id="download" class="glass-card border-t border-purple-900/30 py-8 px-6 mt-12">
+        <div class="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
+            <div class="flex items-center space-x-3">
+                <div class="w-8 h-8 rounded-lg bg-purple-600/20 border border-purple-500/40 flex items-center justify-center text-purple-400">
+                    <i class="fa-solid fa-atom"></i>
+                </div>
+                <span class="font-bold text-slate-300 text-sm tracking-wide">VORTEX LINUX OS</span>
+            </div>
+            <p class="text-xs text-slate-500">© 2026 Vortex Linux Core Team. All rights reserved.</p>
+            <div class="flex gap-4 text-slate-400 text-lg">
+                <a href="#" class="hover:text-purple-400 transition-colors"><i class="fa-brands fa-github"></i></a>
+                <a href="#" class="hover:text-purple-400 transition-colors"><i class="fa-brands fa-discord"></i></a>
+                <a href="#" class="hover:text-purple-400 transition-colors"><i class="fa-brands fa-x-twitter"></i></a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- INTERACTIVE JAVASCRIPT -->
+    <script>
+        // Smooth scroll to top
+        function scrollToTop() {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Particle Canvas Animation
+        const canvas = document.getElementById('bg-canvas');
+        const ctx = canvas.getContext('2d');
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        class Particle {
+            constructor() {
+                this.reset();
+            }
+
+            reset() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.size = Math.random() * 2 + 0.5;
+                this.speedX = (Math.random() - 0.5) * 0.5;
+                this.speedY = (Math.random() - 0.5) * 0.5;
+                this.color = Math.random() > 0.5 ? 'rgba(168, 85, 247, ' : 'rgba(6, 182, 212, ';
+                this.alpha = Math.random() * 0.5 + 0.1;
+            }
+
+            update() {
+                this.x += this.speedX;
+                this.y += this.speedY;
+
+                if (this.x < 0 || this.x > canvas.width || this.y < 0 || this.y > canvas.height) {
+                    this.reset();
+                }
+            }
+
+            draw() {
+                ctx.fillStyle = this.color + this.alpha + ')';
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+
+        const particles = Array.from({ length: 65 }, () => new Particle());
+
+        function animateParticles() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            particles.forEach(p => {
+                p.update();
+                p.draw();
+            });
+            requestAnimationFrame(animateParticles);
+        }
+        animateParticles();
+
+        // Terminal Interactive Command Handling
+        const terminalScreen = document.getElementById('terminal-screen');
+        const terminalInput = document.getElementById('terminal-input');
+
+        function launchSandbox() {
+            document.getElementById('terminal').scrollIntoView({ behavior: 'smooth' });
+            terminalInput.focus();
+        }
+
+        function handleTerminalCommand(e) {
+            e.preventDefault();
+            const cmd = terminalInput.value.trim().toLowerCase();
+            if (!cmd) return;
+
+            // Output command prompt
+            appendTerminalLine(`vortex-user@vortex-aether:~$ ${cmd}`, 'text-cyan-400 font-bold');
+
+            switch (cmd) {
+                case 'help':
+                    appendTerminalLine('Available commands:');
+                    appendTerminalLine('  neofetch - Display system overview and ASCII text banner');
+                    appendTerminalLine('  status   - View module verification metrics');
+                    appendTerminalLine('  uname -a - Show kernel details');
+                    appendTerminalLine('  clear    - Clear terminal window');
+                    break;
+
+                case 'neofetch':
+                    appendTerminalLine(`
+  .---.        vortex-user@vortex-aether
+ /     \\       -------------------------
+|  O O  |      OS: Vortex Linux v1.0 x86_64
+ \\  V  /       Kernel: 6.17.0-20-generic
+  '---'        Uptime: 42 mins
+               Packages: 840 (vortex-pkg), 12 (flatpak)
+               Shell: vortex-bash 5.2
+               WM: Cinnamon / Wayland
+               Memory: 420MiB / 16384MiB
+                    `, 'text-purple-300 font-mono whitespace-pre');
+                    break;
+
+                case 'status':
+                    appendTerminalLine('[✓] Aesthetic Shell: Operational', 'text-emerald-400');
+                    appendTerminalLine('[✓] Plymouth Engine: Configured', 'text-emerald-400');
+                    appendTerminalLine('[✓] Installer Suite: Verified', 'text-emerald-400');
+                    appendTerminalLine('[✓] Core System: Ready', 'text-cyan-400');
+                    break;
+
+                case 'uname -a':
+                    appendTerminalLine('Linux vortex-aether 6.17.0-20-generic #1 SMP PREEMPT_DYNAMIC x86_64 GNU/Linux', 'text-slate-300');
+                    break;
+
+                case 'clear':
+                    terminalScreen.innerHTML = '';
+                    break;
+
+                default:
+                    appendTerminalLine(`Command not found: ${cmd}. Type 'help' for available commands.`, 'text-red-400');
+                    break;
+            }
+
+            terminalInput.value = '';
+            terminalScreen.scrollTop = terminalScreen.scrollHeight;
+        }
+
+        function appendTerminalLine(text, className = 'text-slate-300') {
+            const p = document.createElement('p');
+            p.className = className;
+            p.textContent = text;
+            terminalScreen.appendChild(p);
+        }
+    </script>
+</body>
+</html>
